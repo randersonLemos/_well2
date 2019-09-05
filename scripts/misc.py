@@ -31,7 +31,10 @@ class Keywords:
 
     @staticmethod
     def bhp(): return '*BHP'
-
+    
+    @staticmethod
+    def water(): return '*WATER'
+	
     @staticmethod
     def cont(): return '*CONT'
 

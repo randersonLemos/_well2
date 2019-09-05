@@ -72,9 +72,7 @@ class _Frame_Prod_Dual:
                 a.add_seven(uba,kw.mt(),ff,status,kw.flow_to()
                         ,na.surface(),kw.reflayer()
                         ,suf=" ** uba ff status connection")
-                a.add_seven(uba,kw.fr(),ff,status,kw.flow_to()
-                        ,na.surface(),kw.reflayer()
-                        ,suf=" ** uba ff status connection")
+                a.add_five(uba,kw.fr(),ff,status,kw.flow_to())
             else:
                 a.add_six(uba,kw.mt(),ff,status,kw.flow_to(),'{:02d}'.format(idx))
                 a.add_six(uba,kw.fr(),ff,status,kw.flow_to(),'{:02d}'.format(idx))
@@ -120,7 +118,7 @@ class _Frame_Prod_Dual:
                     conditions= ' '.join(control[:-1])
                     act = control[-1]
                     name = "'ICV_{}_Z{}_{}'".format(self.well_name.strip("'"),idx+1,idx2+1)
-                    a.add_three(kw.trigger(), name, conditions, pre='   ')
+                    a.add_four(kw.trigger(), name, conditions, '*TEST_TIMES 1', pre='   ')
                     name = "'{}_Z{}'".format(self.well_name.strip("'"),idx+1)
                     a.add_three(kw.clumpsetting(), name, act, pre='      ')
                     a.add_one(kw.end_trigger(), pre='   ')
@@ -218,9 +216,7 @@ class _Frame_Inje_Dual_Wag:
                 a.add_seven(uba,kw.mt(),ff,status,kw.flow_from()
                         ,na.surface(),kw.reflayer()
                         ,suf=" ** uba ff status connection")
-                a.add_seven(uba,kw.fr(),ff,status,kw.flow_from()
-                        ,na.surface(),kw.reflayer()
-                        ,suf=" ** uba ff status connection")
+                a.add_five(uba,kw.fr(),ff,status,kw.flow_from())
             else:
                 a.add_six(uba,kw.mt(),ff,status,kw.flow_from(),'{:02d}'.format(idx))
                 a.add_six(uba,kw.fr(),ff,status,kw.flow_from(),'{:02d}'.format(idx))
@@ -231,7 +227,7 @@ class _Frame_Inje_Dual_Wag:
         a.add_one('')
         a.add_four(kw.well(), self.well_name['W'], kw.attachto(), self.group_name)
         a.add_two(kw.injector(), self.well_name['W'])
-        a.add_two(kw.incomp(), kw.gas())
+        a.add_two(kw.incomp(), kw.water())
 
         for ope in self.operate['W']: a.add_five(kw.operate(), *ope)
         for mon in self.monitor['W']: a.add_four(kw.monitor(), *mon)
@@ -247,9 +243,7 @@ class _Frame_Inje_Dual_Wag:
                 a.add_seven(uba,kw.mt(),ff,status,kw.flow_from()
                         ,na.surface(),kw.reflayer()
                         ,suf=" ** uba ff status connection")
-                a.add_seven(uba,kw.fr(),ff,status,kw.flow_from()
-                        ,na.surface(),kw.reflayer()
-                        ,suf=" ** uba ff status connection")
+                a.add_five(uba,kw.fr(),ff,status,kw.flow_from())
             else:
                 a.add_six(uba,kw.mt(),ff,status,kw.flow_from(),'{:02d}'.format(idx))
                 a.add_six(uba,kw.fr(),ff,status,kw.flow_from(),'{:02d}'.format(idx))
