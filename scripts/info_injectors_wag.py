@@ -269,14 +269,14 @@ on_time_dic['IRK056'] = 0.98
 on_time_dic['IRK063'] = 0.98
 
 opening_dic = {}
-opening_dic['IRK004'] = 1734.0
-opening_dic['IRK028'] = 1643.0
-opening_dic['IRK029'] = 1400.0
-opening_dic['IRK036'] = 1584.0
-opening_dic['IRK049'] = 1522.0
-opening_dic['IRK050'] = 1461.0
-opening_dic['IRK056'] = 1339.0
-opening_dic['IRK063'] = 1278.0
+opening_dic['IRK004'] = ('W', 1734.0)
+opening_dic['IRK028'] = ('W', 1643.0)
+opening_dic['IRK029'] = ('W', 1400.0)
+opening_dic['IRK036'] = ('G', 1584.0)
+opening_dic['IRK049'] = ('G', 1522.0)
+opening_dic['IRK050'] = ('W', 1461.0)
+opening_dic['IRK056'] = ('G', 1339.0)
+opening_dic['IRK063'] = ('G', 1278.0)
 
 layerclump_dic = {}
 layerclump_dic['IRK004'] = ['31 06 01:14','31 06 17:30']
@@ -287,3 +287,13 @@ layerclump_dic['IRK049'] = ['35 40 01:13','35 40 16:30']
 layerclump_dic['IRK050'] = ['10 46 01:15','10 46 18:30']
 layerclump_dic['IRK056'] = ['41 51 01:14','41 51 17:30']
 layerclump_dic['IRK063'] = ['37 56 01:14','37 56 17:30']
+
+wag_dic = {}
+wag_dic['IRK004'] = ('G', 1918.0, 183.0, 100)
+wag_dic['IRK028'] = ('G', 1918.0, 183.0, 100)
+wag_dic['IRK029'] = ('G', 1918.0, 183.0, 100)
+wag_dic['IRK036'] = ('W', 1918.0, 183.0, 100)
+wag_dic['IRK049'] = ('W', 1918.0, 183.0, 100)
+wag_dic['IRK050'] = ('G', 1918.0, 183.0, 100)
+wag_dic['IRK056'] = ('W', 1918.0, 183.0, 100)
+wag_dic['IRK063'] = ('W', 1918.0, 183.0, 100)

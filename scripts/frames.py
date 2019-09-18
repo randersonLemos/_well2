@@ -1,10 +1,12 @@
 import pathlib
 from . import misc
 
+
 def add_quotation_masks(stg):
     return "'{}'".format(stg)
 
-class _Frame_Prod_Dual:
+
+class _Frame_Dual:
     def __init__(self, well_name, group_name):
             self.well_name = add_quotation_masks(well_name)
             self.group_name = add_quotation_masks(group_name)
@@ -14,11 +16,22 @@ class _Frame_Prod_Dual:
             self.layerclump = []
             self.open = None
             self.perf = None
+            self.fluid = None
             self.on_time = None
             self.geometry = None
             self.icv_start = None
             self.icv_control = None
             self._agr = misc.Agregator()
+
+    def get_incomp(self, fluid):
+        kw = misc.Keywords
+        if fluid == kw.gas():
+            pass
+        elif fluid == kw.water():
+            pass
+        else:
+            raise NameError('pass to function *GAS or *WATER')
+        self.fluid = fluid
 
     def get_operate(self, cond, const, value, action):
        self.operate.append((cond, const, value, action))
@@ -50,6 +63,17 @@ class _Frame_Prod_Dual:
     def get_icv_control(self, icv_control):
         self.icv_control = icv_control
 
+    def write(self, folder_to_output):
+        p = pathlib.Path(folder_to_output)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        with p.open('w') as fh: fh.write(self.__repr__())
+
+    def __repr__(self):
+        a = self._agr
+        return a.__repr__()
+
+
+class Frame_Prod_Dual(_Frame_Dual):
     def build(self):
         kw = misc.Keywords
         na = misc.Names
@@ -124,17 +148,85 @@ class _Frame_Prod_Dual:
                     a.add_one(kw.end_trigger(), pre='   ')
             a.add_one(kw.end_trigger())
 
-    def __repr__(self):
+
+class Frame_Inje_Dual(_Frame_Dual):
+    def build(self):
+        kw = misc.Keywords
+        na = misc.Names
         a = self._agr
-        return a.__repr__()
 
-    def write(self, folder_to_output):
-        p = pathlib.Path(folder_to_output)
-        p.parent.mkdir(parents=True, exist_ok=True)
-        with p.open('w') as fh: fh.write(self.__repr__())
+        a.add_four(kw.well(), self.well_name, kw.attachto(), self.group_name)
+        a.add_two(kw.injector(), self.well_name)
+        a.add_two(kw.incomp(), self.fluid)
+
+        for ope in self.operate: a.add_five(kw.operate(), *ope)
+        for mon in self.monitor: a.add_four(kw.monitor(), *mon)
+
+        a.add_six(kw.geometry(), *self.geometry)
+        a.add_three(kw.perf(), self.perf, self.well_name)
+
+        for idx, com in enumerate(self.completion):
+            ff = com[3]
+            uba = ' '.join(com[:3])
+            status = com[4]
+            if idx == 0:
+                a.add_seven(uba,kw.mt(),ff,status,kw.flow_to()
+                        ,na.surface(),kw.reflayer()
+                        ,suf=" ** uba ff status connection")
+                a.add_five(uba,kw.fr(),ff,status,kw.flow_to())
+            else:
+                a.add_six(uba,kw.mt(),ff,status,kw.flow_to(),'{:02d}'.format(idx))
+                a.add_six(uba,kw.fr(),ff,status,kw.flow_to(),'{:02d}'.format(idx))
+
+        a.add_two(kw.shutin(), self.well_name)
+
+        if self.on_time:
+            a.add_one('')
+            a.add_two(kw.on_time(), self.well_name)
+            a.add_one(1)
+
+        if self.open:
+            a.add_one('')
+            a.add_one('**Trigger for openning')
+            name = "'OPEN_{}'".format(self.well_name.strip("'"))
+            a.add_seven(kw.trigger(), name, kw.on_elapsed()
+                    , na.time(), kw.timsim(),kw.greater_than(), self.open)
+            a.add_two(kw.open(), self.well_name, pre='   ')
+            a.add_one(kw.end_trigger())
+
+        if self.layerclump:
+            a.add_one('')
+            a.add_one('**Layerclump for ICVs')
+            for idx, layer in enumerate(self.layerclump):
+                name = "'{}_Z{}'".format(self.well_name.strip("'"),idx+1)
+                a.add_two(kw.layerclump(), name)
+                a.add_three(self.well_name, layer, kw.mt())
+                a.add_three(self.well_name, layer, kw.fr())
+
+        if self.icv_start:
+            a.add_one('')
+            a.add_one('**Trigger for ICV control')
+            name = "'ICVs_{}'".format(self.well_name.strip("'"))
+            nr1, nr2, nr3 = self.icv_start
+            timsim = "{} {} {}".format(kw.timsim(), kw.greater_than(), nr1)
+            increment = "{} {}".format(kw.increment(), nr2)
+            apply_times = "{} {}".format(kw.apply_times(), nr3)
+            a.add_seven(kw.trigger(), name, kw.on_elapsed(), na.time()
+                    , timsim, increment, apply_times)
+            for idx, layer in enumerate(self.layerclump):
+                controls = self.icv_control[idx]
+                for idx2, control in enumerate(controls):
+                    conditions= ' '.join(control[:-1])
+                    act = control[-1]
+                    name = "'ICV_{}_Z{}_{}'".format(self.well_name.strip("'"),idx+1,idx2+1)
+                    a.add_four(kw.trigger(), name, conditions, '*TEST_TIMES 1', pre='   ')
+                    name = "'{}_Z{}'".format(self.well_name.strip("'"),idx+1)
+                    a.add_three(kw.clumpsetting(), name, act, pre='      ')
+                    a.add_one(kw.end_trigger(), pre='   ')
+            a.add_one(kw.end_trigger())
 
 
-class _Frame_Inje_Dual_Wag:
+class Frame_Inje_Dual_Wag:
     def __init__(self, well_name, group_name):
         self.well_name = {}
         self.well_name['G'] = add_quotation_masks(well_name + '_G')
