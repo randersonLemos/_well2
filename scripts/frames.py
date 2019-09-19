@@ -277,7 +277,7 @@ class Frame_Inje_Dual_Wag:
         self.wag = (start_mode, timsim, change_cycle, apply_times)
 
     def get_layerclump(self, layerclump):
-        if layerclump: self.layerclump.append(layerclump)
+        self.layerclump.append(layerclump)
 
     def get_icv_start(self, icv_start):
         self.icv_start = icv_start
@@ -390,6 +390,17 @@ class Frame_Inje_Dual_Wag:
             a.add_two(kw.open(), self.well_name[other[mod]], pre='   ')
             a.add_two(kw.shutin(), self.well_name[mod], pre='   ')
             a.add_one(kw.end_trigger())
+
+        if self.layerclump:
+            a.add_one('')
+            a.add_one('**Layerclump for ICVs')
+            for idx, layer in enumerate(self.layerclump):
+                name = "'{}_Z{}'".format(self.well_name['G'][:-3].strip("'"), idx+1)
+                a.add_two(kw.layerclump(), name)
+                a.add_three(self.well_name['G'], layer, kw.mt())
+                a.add_three(self.well_name['G'], layer, kw.fr())
+                a.add_three(self.well_name['W'], layer, kw.mt())
+                a.add_three(self.well_name['W'], layer, kw.fr())
 
     def __repr__(self):
         a = self._agr

@@ -89,7 +89,7 @@ def gen_inje_wag(well, operate, monitor, completion, opening, on_time
     i.get_open(*opening)
 
     for lay in layerclump:
-        print('Frame_Inje_Dual_Wag does not have layerclump... Need to be implemented!')
+        i.get_layerclump(lay)
 
     i.get_wag(*wag)
 
