@@ -1,6 +1,10 @@
 well_lst = ['PRK014','PRK028','PRK045','PRK052','PRK060','PRK061'
          ,'PRK083','PRK084','PRK085','PWILDC']
 
+nr_icvs_well_dic = {'PRK014':3,'PRK028':2,'PRK045':3,'PRK052':2,'PRK060':2,'PRK061':3
+        ,'PRK083':3,'PRK084':2,'PRK085':3,'PWILDC':0}
+
+
 completion_dic = {}
 completion_dic['PRK014'] = '''
 25 10 01 1.0 *OPEN
@@ -371,13 +375,13 @@ icv_start_dic['PRK052'] = (2008.0, 183, 200)
 icv_start_dic['PWILDC'] = ()
 
 icv_control_dic = {}
-icv_control_dic['PRK085'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*3
-icv_control_dic['PRK084'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*2
-icv_control_dic['PRK045'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*3
-icv_control_dic['PRK083'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*3
-icv_control_dic['PRK060'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*2
-icv_control_dic['PRK028'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*2
-icv_control_dic['PRK061'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*3
-icv_control_dic['PRK014'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*3
-icv_control_dic['PRK052'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*2
+icv_control_dic['PRK085'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*nr_icvs_well_dic['PRK085']
+icv_control_dic['PRK084'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*nr_icvs_well_dic['PRK084']
+icv_control_dic['PRK045'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*nr_icvs_well_dic['PRK045']
+icv_control_dic['PRK083'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*nr_icvs_well_dic['PRK083']
+icv_control_dic['PRK060'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*nr_icvs_well_dic['PRK060']
+icv_control_dic['PRK028'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*nr_icvs_well_dic['PRK028']
+icv_control_dic['PRK061'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*nr_icvs_well_dic['PRK061']
+icv_control_dic['PRK014'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*nr_icvs_well_dic['PRK014']
+icv_control_dic['PRK052'] = [(('*ON_CTRLLUMP *GOR > 250','AND','*ON_CTRLLUMP *GOR < 500',0.0),('*ON_CTRLLUMP *WCUT > 0.95',0.0))]*nr_icvs_well_dic['PRK052']
 icv_control_dic['PWILDC'] = []

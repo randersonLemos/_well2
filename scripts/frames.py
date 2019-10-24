@@ -25,11 +25,7 @@ class _Frame_Dual:
 
     def get_incomp(self, fluid):
         kw = misc.Keywords
-        if fluid == kw.gas():
-            pass
-        elif fluid == kw.water():
-            pass
-        else:
+        if not(fluid == kw.gas() or fluid == kw.water()):
             raise NameError('pass to function *GAS or *WATER')
         self.fluid = fluid
 
@@ -73,6 +69,78 @@ class _Frame_Dual:
         return a.__repr__()
 
 
+class _Frame_Dual_2Modes:
+    def __init__(self, base_name, group_name, key_mode1, key_mode2):
+        self.well_name = {}
+        self.well_name[key_mode1] = add_quotation_masks(base_name + '_{}'.format(key_mode1))
+        self.well_name[key_mode2] = add_quotation_masks(base_name + '_{}'.format(key_mode2))
+        self.group_name = add_quotation_masks(group_name)
+        self.operate = {}
+        self.monitor = {}
+        self.completion = []
+        self.layerclump = []
+        self.wag = None
+        self.perf = None
+        self.open = None
+        self.fluid = {}
+        self.on_time = None
+        self.geometry = None
+        self.icv_start = None
+        self.icv_control = None
+        self._key_mode1 = key_mode1
+        self._key_mode2 = key_mode2
+        self._agr = misc.Agregator()
+        self._settings()
+
+    def _settings(self):
+        self.fluid[self._key_mode1] = []
+        self.fluid[self._key_mode2] = []
+        self.operate[self._key_mode1] = []
+        self.operate[self._key_mode2] = []
+        self.monitor[self._key_mode1] = []
+        self.monitor[self._key_mode2] = []
+
+
+    def get_incomp(self, mode, fluid):
+        kw = misc.Keywords
+        if not(fluid == kw.gas() or fluid == kw.water()):
+            raise NameError('pass to function *GAS or *WATER')
+        self.fluid[mode] = fluid
+
+    def get_operate(self, mode, cond, const, value, action):
+        self.operate[mode].append((cond, const, value, action))
+
+    def get_monitor(self, mode, const, value, action):
+        self.monitor[mode].append((const, value, action))
+
+    def get_geometry(self, dir, rad, geofac, wfac, skin):
+        self.geometry = (dir, rad, geofac, wfac, skin)
+
+    def get_perf(self, indexes):
+        self.perf = indexes
+
+    def get_completion(self, completion):
+        self.completion.append(completion)
+
+    def get_on_time(self, value):
+        self.on_time = value
+
+    def get_open(self, mode, value):
+        self.open = (mode, value)
+
+    def get_wag(self, start_mode, timsim, change_cycle, apply_times):
+        self.wag = (start_mode, timsim, change_cycle, apply_times)
+
+    def get_layerclump(self, layerclump):
+        self.layerclump.append(layerclump)
+
+    def get_icv_start(self, icv_start):
+        self.icv_start = icv_start
+
+    def get_icv_control(self, icv_control):
+        self.icv_control = icv_control
+
+
 class Frame_Prod_Dual(_Frame_Dual):
     def build(self):
         kw = misc.Keywords
@@ -106,7 +174,7 @@ class Frame_Prod_Dual(_Frame_Dual):
         if self.on_time:
             a.add_one('')
             a.add_two(kw.on_time(), self.well_name)
-            a.add_one(1)
+            a.add_one(self.on_time)
 
         if self.open:
             a.add_one('')
@@ -119,7 +187,7 @@ class Frame_Prod_Dual(_Frame_Dual):
 
         if self.layerclump:
             a.add_one('')
-            a.add_one('**Layerclump for ICVs')
+            a.add_one('**Layerclump')
             for idx, layer in enumerate(self.layerclump):
                 name = "'{}_Z{}'".format(self.well_name.strip("'"),idx+1)
                 a.add_two(kw.layerclump(), name)
@@ -183,7 +251,7 @@ class Frame_Inje_Dual(_Frame_Dual):
         if self.on_time:
             a.add_one('')
             a.add_two(kw.on_time(), self.well_name)
-            a.add_one(1)
+            a.add_one(self.on_time)
 
         if self.open:
             a.add_one('')
@@ -196,7 +264,7 @@ class Frame_Inje_Dual(_Frame_Dual):
 
         if self.layerclump:
             a.add_one('')
-            a.add_one('**Layerclump for ICVs')
+            a.add_one('**Layerclump')
             for idx, layer in enumerate(self.layerclump):
                 name = "'{}_Z{}'".format(self.well_name.strip("'"),idx+1)
                 a.add_two(kw.layerclump(), name)
@@ -226,64 +294,10 @@ class Frame_Inje_Dual(_Frame_Dual):
             a.add_one(kw.end_trigger())
 
 
-class Frame_Inje_Dual_Wag:
+class Frame_Inje_Dual_Wag(_Frame_Dual_2Modes):
     def __init__(self, well_name, group_name):
-        self.well_name = {}
-        self.well_name['G'] = add_quotation_masks(well_name + '_G')
-        self.well_name['W'] = add_quotation_masks(well_name + '_W')
-        self.group_name = add_quotation_masks(group_name)
-        self.operate = {}
-        self.monitor = {}
-        self.completion = []
-        self.layerclump = []
-        self.wag = None
-        self.perf = None
-        self.open = None
-        self.on_time = None
-        self.geometry = None
-        self.icv_start = None
-        self.icv_control = None
-        self._agr = misc.Agregator()
-        self._settings()
+        super().__init__(well_name, group_name, 'W', 'G')
 
-    def _settings(self):
-        self.operate['G'] = []
-        self.operate['W'] = []
-        self.monitor['G'] = []
-        self.monitor['W'] = []
-
-    def get_operate(self, mode, cond, const, value, action):
-        self.operate[mode].append((cond, const, value, action))
-
-    def get_monitor(self, mode, const, value, action):
-        self.monitor[mode].append((const, value, action))
-
-    def get_geometry(self, dir, rad, geofac, wfac, skin):
-        self.geometry = (dir, rad, geofac, wfac, skin)
-
-    def get_perf(self, indexes):
-        self.perf = indexes
-
-    def get_completion(self, completion):
-        self.completion.append(completion)
-
-    def get_on_time(self, value):
-        self.on_time = value
-
-    def get_open(self, mode, value):
-        self.open = (mode, value)
-
-    def get_wag(self, start_mode, timsim, change_cycle, apply_times):
-        self.wag = (start_mode, timsim, change_cycle, apply_times)
-
-    def get_layerclump(self, layerclump):
-        self.layerclump.append(layerclump)
-
-    def get_icv_start(self, icv_start):
-        self.icv_start = icv_start
-
-    def get_icv_control(self, icv_control):
-        self.icv_control = icv_control
 
     def build(self):
         kw = misc.Keywords
@@ -292,7 +306,7 @@ class Frame_Inje_Dual_Wag:
 
         a.add_four(kw.well(), self.well_name['G'], kw.attachto(), self.group_name)
         a.add_two(kw.injector(), self.well_name['G'])
-        a.add_two(kw.incomp(), kw.gas())
+        a.add_two(kw.incomp(), self.fluid['G'])
 
         for ope in self.operate['G']: a.add_five(kw.operate(), *ope)
         for mon in self.monitor['G']: a.add_four(kw.monitor(), *mon)
@@ -319,7 +333,7 @@ class Frame_Inje_Dual_Wag:
         a.add_one('')
         a.add_four(kw.well(), self.well_name['W'], kw.attachto(), self.group_name)
         a.add_two(kw.injector(), self.well_name['W'])
-        a.add_two(kw.incomp(), kw.water())
+        a.add_two(kw.incomp(), self.fluid['W'])
 
         for ope in self.operate['W']: a.add_five(kw.operate(), *ope)
         for mon in self.monitor['W']: a.add_four(kw.monitor(), *mon)
@@ -346,9 +360,9 @@ class Frame_Inje_Dual_Wag:
         if self.on_time:
             a.add_one('')
             a.add_two(kw.on_time(), self.well_name['G'])
-            a.add_one(1)
+            a.add_one(self.on_time)
             a.add_two(kw.on_time(), self.well_name['W'])
-            a.add_one(1)
+            a.add_one(self.on_time)
 
         if self.open:
             a.add_one('')
@@ -393,7 +407,7 @@ class Frame_Inje_Dual_Wag:
 
         if self.layerclump:
             a.add_one('')
-            a.add_one('**Layerclump for ICVs')
+            a.add_one('**Layerclump')
             for idx, layer in enumerate(self.layerclump):
                 name = "'{}_Z{}'".format(self.well_name['G'][:-3].strip("'"), idx+1)
                 a.add_two(kw.layerclump(), name)
