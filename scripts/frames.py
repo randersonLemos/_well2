@@ -82,7 +82,7 @@ class _Frame_Prod_Dual:
         if self.on_time:
             a.add_one('')
             a.add_two(kw.on_time(), self.well_name)
-            a.add_one(1)
+            a.add_one(self.on_time)
 
         if self.open:
             a.add_one('')
@@ -254,9 +254,9 @@ class _Frame_Inje_Dual_Wag:
         if self.on_time:
             a.add_one('')
             a.add_two(kw.on_time(), self.well_name['G'])
-            a.add_one(1)
+            a.add_one(self.on_time)
             a.add_two(kw.on_time(), self.well_name['W'])
-            a.add_one(1)
+            a.add_one(self.on_time)
 
         if self.open:
             a.add_one('')
