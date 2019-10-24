@@ -1,3 +1,4 @@
+import re
 import pathlib
 from . import misc
 
@@ -140,6 +141,15 @@ class _Frame_Dual_2Modes:
     def get_icv_control(self, icv_control):
         self.icv_control = icv_control
 
+    def __repr__(self):
+        a = self._agr
+        return a.__repr__()
+
+    def write(self, fname):
+        p = pathlib.Path(fname)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        with p.open('w') as fh: fh.write(self.__repr__())
+
 
 class Frame_Prod_Dual(_Frame_Dual):
     def build(self):
@@ -207,12 +217,12 @@ class Frame_Prod_Dual(_Frame_Dual):
             for idx, layer in enumerate(self.layerclump):
                 controls = self.icv_control[idx]
                 for idx2, control in enumerate(controls):
-                    conditions= ' '.join(control[:-1])
                     act = control[-1]
-                    name = "'ICV_{}_Z{}_{}'".format(self.well_name.strip("'"),idx+1,idx2+1)
-                    a.add_four(kw.trigger(), name, conditions, '*TEST_TIMES 1', pre='   ')
-                    name = "'{}_Z{}'".format(self.well_name.strip("'"),idx+1)
-                    a.add_three(kw.clumpsetting(), name, act, pre='      ')
+                    name1 = "'ICV_{}_Z{}_{}'".format(self.well_name.strip("'"),idx+1,idx2+1)
+                    name2 = "'{}_Z{}'".format(self.well_name.strip("'"),idx+1)
+                    conditions = re.sub('_LAYER_',name2,' '.join(control[:-1]))
+                    a.add_four(kw.trigger(), name1, conditions, '*TEST_TIMES 1', pre='   ')
+                    a.add_three(kw.clumpsetting(), name2, act, pre='      ')
                     a.add_one(kw.end_trigger(), pre='   ')
             a.add_one(kw.end_trigger())
 
@@ -284,12 +294,12 @@ class Frame_Inje_Dual(_Frame_Dual):
             for idx, layer in enumerate(self.layerclump):
                 controls = self.icv_control[idx]
                 for idx2, control in enumerate(controls):
-                    conditions= ' '.join(control[:-1])
                     act = control[-1]
-                    name = "'ICV_{}_Z{}_{}'".format(self.well_name.strip("'"),idx+1,idx2+1)
-                    a.add_four(kw.trigger(), name, conditions, '*TEST_TIMES 1', pre='   ')
-                    name = "'{}_Z{}'".format(self.well_name.strip("'"),idx+1)
-                    a.add_three(kw.clumpsetting(), name, act, pre='      ')
+                    name1 = "'ICV_{}_Z{}_{}'".format(self.well_name.strip("'"),idx+1,idx2+1)
+                    name2 = "'{}_Z{}'".format(self.well_name.strip("'"),idx+1)
+                    conditions = re.sub('_LAYER_',name2,' '.join(control[:-1]))
+                    a.add_four(kw.trigger(), name1, conditions, '*TEST_TIMES 1', pre='   ')
+                    a.add_three(kw.clumpsetting(), name2, act, pre='      ')
                     a.add_one(kw.end_trigger(), pre='   ')
             a.add_one(kw.end_trigger())
 
@@ -297,7 +307,6 @@ class Frame_Inje_Dual(_Frame_Dual):
 class Frame_Inje_Dual_Wag(_Frame_Dual_2Modes):
     def __init__(self, well_name, group_name):
         super().__init__(well_name, group_name, 'W', 'G')
-
 
     def build(self):
         kw = misc.Keywords
@@ -353,7 +362,6 @@ class Frame_Inje_Dual_Wag(_Frame_Dual_2Modes):
             else:
                 a.add_six(uba,kw.mt(),ff,status,kw.flow_from(),'{:02d}'.format(idx))
                 a.add_six(uba,kw.fr(),ff,status,kw.flow_from(),'{:02d}'.format(idx))
-
 
         a.add_two(kw.shutin(), self.well_name['W'])
 
@@ -415,15 +423,3 @@ class Frame_Inje_Dual_Wag(_Frame_Dual_2Modes):
                 a.add_three(self.well_name['G'], layer, kw.fr())
                 a.add_three(self.well_name['W'], layer, kw.mt())
                 a.add_three(self.well_name['W'], layer, kw.fr())
-
-    def __repr__(self):
-        a = self._agr
-        return a.__repr__()
-
-    def write(self, fname):
-        p = pathlib.Path(fname)
-        p.parent.mkdir(parents=True, exist_ok=True)
-        with p.open('w') as fh: fh.write(self.__repr__())
-
-    def _trigger_open_name(self, mode):
-        return 'OPEN_{}'.format(self.well[mode])
