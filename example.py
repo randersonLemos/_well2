@@ -38,7 +38,8 @@ def gen_inje_icv(well, fluid, operate, monitor, completion, opening, on_time
 
 def gen_inje_wag(well, operate, monitor, completion, opening, on_time
         , wag, layerclump, icv_start, icv_control, output_folder):
-    w = states.Frame_Inje_Dual_Wag(well, 'INJECTION')
+    from scripts.frames.inje_dual_wag import Inje_Dual_Wag
+    w = Inje_Dual_Wag(well, 'INJECTION')
 
     w.get_incomp('W','*WATER')
     w.get_incomp('G','*GAS')

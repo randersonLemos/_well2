@@ -5,7 +5,6 @@ from ..misc import Keywords as kw
 class Inje_Dual_ICV(_State_Dual):
     def build(self):
         agr = self._agr
-        a = self._agr
 
         from ..pieces.head import head_default as head
         head(agr, self.well_name, kw.injector(), self.group_name, self.fluid,
