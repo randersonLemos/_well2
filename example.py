@@ -2,7 +2,7 @@ from scripts.misc import Keywords as kw
 
 def example1(): # producer
     from scripts.utils import gen_prod_icv as gpi
-    import scripts.info_producers as ip
+    import infos.producers as ip
     cont_repeat ='{} {}'.format(kw.cont(), kw.repeat())
 
     operate = [ (kw.max(), kw.stl(), 3000.0, cont_repeat)
@@ -26,7 +26,7 @@ def example1(): # producer
 
 def example2(): # injector of water
     from scripts.utils import gen_inje_icv as gii
-    import scripts.info_injectors as ii
+    import infos.injectors as ii
     cont_repeat = '{} {}'.format(kw.cont(),kw.repeat())
 
     operate = [ (kw.max(), kw.stw(), 5000.0, cont_repeat)
@@ -51,7 +51,7 @@ def example2(): # injector of water
 
 def example3(): # injector with wag
     from scripts.utils import gen_inje_wag as giw
-    import scripts.info_injectors_wag as iiw
+    import infos.injectors_wag as iiw
     cont_repeat = '{} {}'.format(kw.cont(),kw.repeat())
 
     operate = [ ('G', kw.max(), kw.stg(), 3000000.0, cont_repeat)
