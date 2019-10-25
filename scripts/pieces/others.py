@@ -2,7 +2,7 @@ from .. import misc
 
 
 kw = misc.Keywords
-na = misc.Names
+wd = misc.Words
 
 
 def on_time_default(agr, well_name, on_time):
@@ -14,7 +14,7 @@ def open_default(agr, well_name, open):
     agr.add_one('**Opening')
     name = "'OPEN_{}'".format(well_name.strip("'"))
     agr.add_seven(kw.trigger(), name, kw.on_elapsed()
-            , na.time(), kw.timsim(),kw.greater_than(), open)
+            , wd.time(), kw.timsim(),kw.greater_than(), open)
     agr.add_two(kw.open(), well_name, pre='   ')
     agr.add_one(kw.end_trigger())
 
@@ -46,7 +46,7 @@ def start_wag_default(agr, well_name, wag_cond):
     increment = "{} {}".format(kw.increment(), nr2*2)
     apply_times = "{} {}".format(kw.apply_times(), nr3)
 
-    agr.add_seven(kw.trigger(), name, kw.on_elapsed(), na.time()
+    agr.add_seven(kw.trigger(), name, kw.on_elapsed(), wd.time()
             , timsim, increment, apply_times)
     agr.add_two(kw.open(), well_name[mod], pre='   ')
     agr.add_two(kw.shutin(), well_name[other[mod]], pre='   ')
@@ -57,7 +57,7 @@ def start_wag_default(agr, well_name, wag_cond):
     increment = "{} {}".format(kw.increment(), nr2*2)
     apply_times = "{} {}".format(kw.apply_times(), nr3)
 
-    agr.add_seven(kw.trigger(), name, kw.on_elapsed(), na.time()
+    agr.add_seven(kw.trigger(), name, kw.on_elapsed(), wd.time()
             , timsim, increment, apply_times)
     agr.add_two(kw.open(), well_name[other[mod]], pre='   ')
     agr.add_two(kw.shutin(), well_name[mod], pre='   ')

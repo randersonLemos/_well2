@@ -2,7 +2,6 @@ from .. import misc
 
 
 kw = misc.Keywords
-na = misc.Names
 
 
 def head_default(agr, well_name, well_type, group_name, fluid, operate_lst, monitor_lst

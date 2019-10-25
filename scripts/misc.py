@@ -31,10 +31,10 @@ class Keywords:
 
     @staticmethod
     def bhp(): return '*BHP'
-    
+
     @staticmethod
     def water(): return '*WATER'
-	
+
     @staticmethod
     def cont(): return '*CONT'
 
@@ -116,7 +116,7 @@ class Keywords:
     @staticmethod
     def clumpsetting(): return '*CLUMPSETTING'
 
-class Names:
+class Words:
     @staticmethod
     def time(): return "'TIME'"
 

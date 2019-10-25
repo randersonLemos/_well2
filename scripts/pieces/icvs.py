@@ -3,7 +3,7 @@ import re
 
 
 kw = misc.Keywords
-na = misc.Names
+wd = misc.Words
 
 
 def icv_deafult(agr, well_name, icv_start, layerclump
@@ -14,7 +14,7 @@ def icv_deafult(agr, well_name, icv_start, layerclump
     timsim = "{} {} {}".format(kw.timsim(), kw.greater_than(), nr1)
     increment = "{} {}".format(kw.increment(), nr2)
     apply_times = "{} {}".format(kw.apply_times(), nr3)
-    agr.add_seven(kw.trigger(), name, kw.on_elapsed(), na.time()
+    agr.add_seven(kw.trigger(), name, kw.on_elapsed(), wd.time()
             , timsim, increment, apply_times)
     for idx, layer in enumerate(layerclump):
         controls = icv_control[idx]

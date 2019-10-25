@@ -2,7 +2,7 @@ from .. import misc
 
 
 kw = misc.Keywords
-na = misc.Names
+wd = misc.Words
 
 
 def completion_dual_default(agr, completion):
@@ -12,7 +12,7 @@ def completion_dual_default(agr, completion):
         status = com[4]
         if idx == 0:
             agr.add_seven(uba, kw.mt(), ff, status, kw.flow_to()
-                    , na.surface(), kw.reflayer()
+                    , wd.surface(), kw.reflayer()
                     , suf=" ** uba ff status connection")
             agr.add_five(uba, kw.fr(), ff, status, kw.flow_to())
         else:
