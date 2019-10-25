@@ -1,12 +1,13 @@
 from scripts.misc import Keywords as kw
-from scripts import frames
+from scripts import states
 from scripts import utils
 import pathlib
 
 
 def gen_inje_icv(well, fluid, operate, monitor, completion, opening, on_time
         , layerclump, icv_start, icv_control, output_folder):
-    w = frames.Frame_Inje_Dual(well, 'INJECTION')
+    from scripts.frames.inje_dual_icv import Inje_Dual_ICV
+    w = Inje_Dual_ICV(well, 'INJECTION')
 
     w.get_incomp(fluid)
 
@@ -37,7 +38,7 @@ def gen_inje_icv(well, fluid, operate, monitor, completion, opening, on_time
 
 def gen_inje_wag(well, operate, monitor, completion, opening, on_time
         , wag, layerclump, icv_start, icv_control, output_folder):
-    w = frames.Frame_Inje_Dual_Wag(well, 'INJECTION')
+    w = states.Frame_Inje_Dual_Wag(well, 'INJECTION')
 
     w.get_incomp('W','*WATER')
     w.get_incomp('G','*GAS')
@@ -67,7 +68,8 @@ def gen_inje_wag(well, operate, monitor, completion, opening, on_time
 
 def gen_prod_icv(well, operate, monitor, completion, opening, on_time
         , layerclump, icv_start, icv_control, output_folder):
-    w = frames.Frame_Prod_Dual(well, 'PRODUCTION')
+    from scripts.frames.prod_dual_icv import Prod_Dual_ICV
+    w = Prod_Dual_ICV(well, 'PRODUCTION')
 
     for ope in operate:
         w.get_operate(*ope)
