@@ -1,8 +1,8 @@
-from .. import misc
+from dic2.scripts import dictionary as dicc
 
 
-kw = misc.Keywords
-wd = misc.Words
+kw = dicc.Keywords
+wd = dicc.Words
 
 
 def on_time_default(agr, well_name, on_time):

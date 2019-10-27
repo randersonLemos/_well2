@@ -1,8 +1,9 @@
 from .. import misc
+from dic2.scripts import dictionary as dicc
 
 
-kw = misc.Keywords
-wd = misc.Words
+kw = dicc.Keywords
+wd = dicc.Words
 
 
 def completion_dual_default(agr, completion):

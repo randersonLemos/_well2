@@ -1,6 +1,7 @@
 import re
 import pathlib
 from . import misc
+from dic2.scripts.dictionary import Keywords as kw
 
 
 def add_quotation_masks(stg):
@@ -25,7 +26,6 @@ class _State_Dual:
             self._agr = misc.Agregator()
 
     def get_incomp(self, fluid):
-        kw = misc.Keywords
         if not(fluid == kw.gas() or fluid == kw.water()):
             raise NameError('pass to function *GAS or *WATER')
         self.fluid = fluid
@@ -102,7 +102,6 @@ class _State_Dual_Two_Modes:
         self.monitor[self._key_mode2] = []
 
     def get_incomp(self, mode, fluid):
-        kw = misc.Keywords
         if not(fluid == kw.gas() or fluid == kw.water()):
             raise NameError('pass to function *GAS or *WATER')
         self.fluid[mode] = fluid

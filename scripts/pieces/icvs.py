@@ -1,9 +1,9 @@
-from .. import misc
+from dic2.scripts import dictionary as dicc
 import re
 
 
-kw = misc.Keywords
-wd = misc.Words
+kw = dicc.Keywords
+wd = dicc.Words
 
 
 def icv_deafult(agr, well_name, icv_start, layerclump

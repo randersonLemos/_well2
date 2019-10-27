@@ -1,5 +1,5 @@
 from ..states import _State_Dual_Two_Modes
-from ..misc import Keywords as kw
+from dic2.scripts.dictionary import Keywords as kw
 
 
 class Inje_Dual_Wag(_State_Dual_Two_Modes):

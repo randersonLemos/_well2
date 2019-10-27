@@ -1,7 +1,7 @@
-from .. import misc
+from dic2.scripts import dictionary as dicc
 
 
-kw = misc.Keywords
+kw = dicc.Keywords
 
 
 def head_default(agr, well_name, well_type, group_name, fluid, operate_lst, monitor_lst
