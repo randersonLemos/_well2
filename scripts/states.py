@@ -1,7 +1,7 @@
 import re
 import pathlib
 from . import misc
-from dic2.scripts.dictionary import Keywords as kw
+from dictionary.scripts.dictionary import Keywords as kw
 
 
 def add_quotation_masks(stg):

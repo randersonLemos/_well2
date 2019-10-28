@@ -3,7 +3,7 @@ import pathlib
 
 def gen_inje_icv(well, fluid, operate, monitor, completion, opening, on_time
         , layerclump, icv_start, icv_control, output_folder):
-    from scripts.frames.inje_dual_icv import Inje_Dual_ICV
+    from well.scripts.frames.inje_dual_icv import Inje_Dual_ICV
     w = Inje_Dual_ICV(well, 'INJECTION')
 
     w.get_incomp(fluid)
@@ -35,7 +35,7 @@ def gen_inje_icv(well, fluid, operate, monitor, completion, opening, on_time
 
 def gen_inje_wag(well, operate, monitor, completion, opening, on_time
         , wag, layerclump, icv_start, icv_control, output_folder):
-    from scripts.frames.inje_dual_wag import Inje_Dual_Wag
+    from well.scripts.frames.inje_dual_wag import Inje_Dual_Wag
     w = Inje_Dual_Wag(well, 'INJECTION')
 
     w.get_incomp('W','*WATER')
@@ -66,7 +66,7 @@ def gen_inje_wag(well, operate, monitor, completion, opening, on_time
 
 def gen_prod_icv(well, operate, monitor, completion, opening, on_time
         , layerclump, icv_start, icv_control, output_folder):
-    from scripts.frames.prod_dual_icv import Prod_Dual_ICV
+    from well.scripts.frames.prod_dual_icv import Prod_Dual_ICV
     w = Prod_Dual_ICV(well, 'PRODUCTION')
 
     for ope in operate:
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     from os import sys, path
     sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
-    from dic2.scripts.dictionary import Keywords as kw
+    from dictionary.scripts.dictionary import Keywords as kw
 
     import infos.producers as ip
     gpi = gen_prod_icv

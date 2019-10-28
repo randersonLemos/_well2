@@ -1,5 +1,5 @@
 from ..states import _State_Dual
-from dic2.scripts.dictionary import Keywords as kw
+from dictionary.scripts.dictionary import Keywords as kw
 
 
 class Prod_Dual_ICV(_State_Dual):

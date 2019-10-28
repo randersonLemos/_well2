@@ -1,4 +1,4 @@
-from dic2.scripts import dictionary as dicc
+from dictionary.scripts import dictionary as dicc
 
 
 kw = dicc.Keywords
