@@ -34,7 +34,7 @@ def gen_inje_icv(well, fluid, operate, monitor, completion, opening, on_time
     w.write(pathlib.Path(output_folder) / '{}.inc'.format(well))
 
 def gen_inje_wag(well, operate, monitor, completion, opening, on_time
-        , wag, layerclump, icv_start, icv_control, output_folder):
+        , wag, layerclump, output_folder):
     from well.scripts.frames.inje_dual_wag import Inje_Dual_Wag
     w = Inje_Dual_Wag(well, 'INJECTION')
 
@@ -101,81 +101,87 @@ if __name__ == '__main__':
 
     from dictionary.scripts.dictionary import Keywords as kw
 
-    import infos.producers as ip
-    gpi = gen_prod_icv
-    cont_repeat ='{} {}'.format(kw.cont(), kw.repeat())
+    well = 'AWESOME'
 
-    operate = [ (kw.max(), kw.stl(), 3000.0, cont_repeat)
-               ,(kw.min(), kw.bhp(),  295.0, cont_repeat)
-              ]
+    completion = []
+    completion.append(('25', '10', '01', '1.0', '*OPEN'))
+    completion.append(('25', '10', '02', '1.0', '*OPEN'))
+    completion.append(('25', '10', '03', '1.0', '*OPEN'))
+    completion.append(('25', '10', '04', '1.0', '*OPEN'))
+    completion.append(('25', '10', '05', '1.0', '*OPEN'))
 
-    monitor = [(kw.wcut(), 0.95, kw.shutin())]
+    layerclump = []
+    layerclump.append('25 10 01:11')
+    layerclump.append('25 10 14:19')
 
-    for well in ip.well_lst:
-        completion = [tuple(line.split()) for line in ip.completion_dic[well].strip().splitlines()]
+    operate = []
+    operate.append((kw.max(), kw.stl(), 3000.0, '*CONT *REPEAT'))
+    operate.append((kw.min(), kw.bhp(),  295.0, '*CONT *REPEAT'))
 
-        gpi(  well
-            , operate
-            , monitor
-            , completion
-            , ip.opening_dic[well]
-            , ip.on_time_dic[well]
-            , ip.layerclump_dic[well]
-            , ip.icv_start_dic[well]
-            , ip.icv_control_dic[well]
-            , './wells/producers'
-            )
+    monitor = []
+    monitor.append((kw.wcut(), 0.95, kw.shutin()))
 
-    import infos.injectors as ii
-    gii = gen_inje_icv
-    cont_repeat = '{} {}'.format(kw.cont(),kw.repeat())
+    openn = 1704
 
-    operate = [ (kw.max(), kw.stw(), 5000.0, cont_repeat)
-               ,(kw.max(), kw.bhp(),  470.0, cont_repeat)
-              ]
+    on_time = 1.0
+
+    icv_nr = 3
+
+    icv_start = (2008, 183, 200)
+
+    icv_control = [(('*ON_CTRLLUMP __LAYER__ *GOR > 750','AND','*ON_CTRLLUMP _LAYER_ *GOR < 1250',0.0),('*ON_CTRLLUMP __LAYER__ *WCUT > 0.95',0.0))]*icv_nr
+
+    gen_prod_icv(  well
+                 , operate
+                 , monitor
+                 , completion
+                 , openn
+                 , on_time
+                 , layerclump
+                 , icv_start
+                 , icv_control
+                 , './wells/producers'
+                 )
+
+    operate = []
+    operate.append((kw.max(), kw.stw(),    5000.0, '*CONT *REPEAT'))
+    operate.append((kw.max(), kw.bhp(),     470.0, '*CONT *REPEAT'))
 
     monitor = []
 
-    for well in ii.well_lst:
-        completion = [tuple(line.split()) for line in ii.completion_dic[well].strip().splitlines()]
+    gen_inje_icv(  well
+                 , '*WATER'
+                 , operate
+                 , monitor
+                 , completion
+                 , openn
+                 , on_time
+                 , layerclump
+                 , icv_start
+                 , icv_control
+                 , './wells/injectors'
+                 )
 
-        gii(  well
-            , '*WATER'
-            , operate
-            , monitor
-            , completion
-            , ii.opening_dic[well]
-            , ii.on_time_dic[well]
-            , ii.layerclump_dic[well]
-            , []
-            , []
-            , './wells/injectors'
-            )
 
-    import infos.injectors_wag as iiw
-    giw = gen_inje_wag
-    cont_repeat = '{} {}'.format(kw.cont(),kw.repeat())
-
-    operate = [ ('G', kw.max(), kw.stg(), 3000000.0, cont_repeat)
-               ,('G', kw.max(), kw.bhp(),     540.0, cont_repeat)
-               ,('W', kw.max(), kw.stw(),    5000.0, cont_repeat)
-               ,('W', kw.max(), kw.bhp(),     470.0, cont_repeat)
-              ]
+    operate = []
+    operate.append(('G', kw.max(), kw.stg(), 3000000.0, '*CONT *REPEAT'))
+    operate.append(('G', kw.max(), kw.bhp(),     540.0, '*CONT *REPEAT'))
+    operate.append(('W', kw.max(), kw.stw(),    5000.0, '*CONT *REPEAT'))
+    operate.append(('W', kw.max(), kw.bhp(),     470.0, '*CONT *REPEAT'))
 
     monitor = []
 
-    for well in iiw.well_lst:
-        completion = [tuple(line.split()) for line in iiw.completion_dic[well].strip().splitlines()]
+    openn = ('W', 1734.0)
 
-        giw(  well
-            , operate
-            , monitor
-            , completion
-            , iiw.opening_dic[well]
-            , iiw.on_time_dic[well]
-            , iiw.wag_dic[well]
-            , iiw.layerclump_dic[well]
-            , []
-            , []
-            , './wells/injectors_wag'
-            )
+    wag_cycle = ('G', 1918.0, 183.0, 100)
+
+    gen_inje_wag(  well
+                 , operate
+                 , monitor
+                 , completion
+                 , openn
+                 , on_time
+                 , wag_cycle
+                 , layerclump
+                 , './wells/injectors_wag'
+                 )
