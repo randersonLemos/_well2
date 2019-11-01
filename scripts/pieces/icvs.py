@@ -22,7 +22,7 @@ def icv_deafult(agr, well_name, icv_start, layerclump
             act = control[-1]
             name1 = "'ICV_{}_Z{}_{}'".format(well_name.strip("'"),idx+1,idx2+1)
             name2 = "'{}_Z{}'".format(well_name.strip("'"),idx+1)
-            conditions = re.sub('_LAYER_',name2,' '.join(control[:-1]))
+            conditions = re.sub('__LAYER__',name2,' '.join(control[:-1]))
             agr.add_four(kw.trigger(), name1, conditions, '*TEST_TIMES 1', pre='   ')
             agr.add_three(kw.clumpsetting(), name2, act, pre='      ')
             agr.add_one(kw.end_trigger(), pre='   ')
