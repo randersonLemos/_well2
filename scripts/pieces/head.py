@@ -1,7 +1,7 @@
-from dictionary.scripts import dictionary as dicc
+from dictionary.scripts.keywords import Keywords
 
 
-kw = dicc.Keywords
+kw = Keywords
 
 
 def head_default(agr, well_name, well_type, group_name, fluid, operate_lst, monitor_lst

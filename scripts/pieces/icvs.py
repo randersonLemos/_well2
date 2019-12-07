@@ -1,9 +1,10 @@
-from dictionary.scripts import dictionary as dicc
+from dictionary.scripts.keywords import Keywords
+from dictionary.scripts.words import Words
 import re
 
 
-kw = dicc.Keywords
-wd = dicc.Words
+kw = Keywords
+wd = Words
 
 
 def icv_deafult(agr, well_name, icv_start, layerclump
