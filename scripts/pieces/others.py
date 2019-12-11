@@ -41,6 +41,10 @@ def start_wag_default(agr, well_name, wag_cond):
     other = {'G':'W', 'W':'G'}
     mod, nr1, nr2, nr3 = wag_cond
 
+    nr1 = float(nr1)
+    nr2 = float(nr2)
+    nr3 = float(nr3)
+
     agr.add_one('** Starting WAG cycle')
     name = "'WAG_{}'".format(well_name[mod].strip("'"))
     timsim = "{} {} {}".format(kw.timsim(), kw.greater_than(), nr1)
