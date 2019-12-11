@@ -24,18 +24,18 @@ def layerclump_default(agr, well_name, layerclump):
     for idx, layer in enumerate(layerclump):
         name = "'{}_Z{}'".format(well_name.strip("'"),idx+1)
         agr.add_two(kw.layerclump(), name)
-        agr.add_three(well_name, layer, kw.mt())
-        agr.add_three(well_name, layer, kw.fr())
+        agr.add_three(well_name, ' '.join(layer), kw.mt())
+        agr.add_three(well_name, ' '.join(layer), kw.fr())
 
 def layerclump_wag_default(agr, well_name, layerclump):
     agr.add_one('**Layerclump')
     for idx, layer in enumerate(layerclump):
         name = "'{}_Z{}'".format(well_name['G'][:-3].strip("'"), idx+1)
         agr.add_two(kw.layerclump(), name)
-        agr.add_three(well_name['G'], layer, kw.mt())
-        agr.add_three(well_name['G'], layer, kw.fr())
-        agr.add_three(well_name['W'], layer, kw.mt())
-        agr.add_three(well_name['W'], layer, kw.fr())
+        agr.add_three(well_name['G'], ' '.join(layer), kw.mt())
+        agr.add_three(well_name['G'], ' '.join(layer), kw.fr())
+        agr.add_three(well_name['W'], ' '.join(layer), kw.mt())
+        agr.add_three(well_name['W'], ' '.join(layer), kw.fr())
 
 def start_wag_default(agr, well_name, wag_cond):
     other = {'G':'W', 'W':'G'}
