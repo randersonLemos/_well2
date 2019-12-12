@@ -43,7 +43,7 @@ def start_wag_default(agr, well_name, wag_cond):
 
     nr1 = float(nr1)
     nr2 = float(nr2)
-    nr3 = float(nr3)
+    nr3 = int(nr3)
 
     agr.add_one('** Starting WAG cycle')
     name = "'WAG_{}'".format(well_name[mod].strip("'"))
