@@ -73,8 +73,8 @@ class _State_Dual:
 class _State_Dual_Two_Modes:
     def __init__(self, base_name, group_name, key_mode1, key_mode2):
         self.well_name = {}
-        self.well_name[key_mode1] = add_quotation_masks(base_name + '_{}'.format(key_mode1))
-        self.well_name[key_mode2] = add_quotation_masks(base_name + '_{}'.format(key_mode2))
+        self.well_name[key_mode1] = add_quotation_masks(base_name + '-{}'.format(key_mode1))
+        self.well_name[key_mode2] = add_quotation_masks(base_name + '-{}'.format(key_mode2))
         self.group_name = add_quotation_masks(group_name)
         self.operate = {}
         self.monitor = {}
