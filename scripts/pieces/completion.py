@@ -15,7 +15,8 @@ def completion_dual_default(agr, completion):
         if idx == 0:
             agr.add_seven(uba, kw.mt(), ff, status, kw.flow_to()
                     , wd.surface(), kw.reflayer()
-                    , suf=" ** uba ff status connection")
+                    #, suf=" ** uba ff status connection"
+                    )
             agr.add_five(uba, kw.fr(), ff, status, kw.flow_to())
         else:
             agr.add_six(uba, kw.mt(), ff, status
