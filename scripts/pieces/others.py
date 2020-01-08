@@ -28,7 +28,7 @@ def layerclump_default(agr, well_name, layerclump):
         agr.add_three(well_name, ' '.join(layer), kw.fr())
 
 def layerclump_wag_default(agr, well_name, layerclump):
-    agr.add_one('**Layerclump')
+    #agr.add_one('**Layerclump')
     for idx, layer in enumerate(layerclump):
         name = "'{}_Z{}'".format(well_name['G'][:-3].strip("'"), idx+1)
         agr.add_two(kw.layerclump(), name)
